@@ -57,6 +57,10 @@ class BuildWatcher {
     }
 
     func handleChanges(from newDirectories: Set<DirectoryChange>) {
+        let changedDirectories = newDirectories.subtracting(contents)
 
+        for changedDirectory in changedDirectories {
+            print("\(changedDirectory.url) changes!")
+        }
     }
 }
