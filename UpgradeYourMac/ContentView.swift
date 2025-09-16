@@ -11,6 +11,7 @@ import SwiftUI
 struct ContentView: View {
     @State private var watcher = BuildWatcher()
     @Query(sort: \BuildLog.timeStartedRecording, order: .reverse) var builds: [BuildLog]
+    @Environment(\.modelContext) var modelContext
 
     var body: some View {
         List(builds) { build in
@@ -20,6 +21,9 @@ struct ContentView: View {
                 Label("\(build.title) on \(build.dateStarted) took \(build.timeTaken) seconds", systemImage: "paintbrush")
                     .foregroundStyle(.secondary)
             }
+        }
+        .onAppear {
+            watcher.modelContext = modelContext
         }
     }
 }
