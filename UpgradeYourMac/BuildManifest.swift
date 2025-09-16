@@ -13,7 +13,7 @@ struct BuildManifest: Codable {
 }
 
 @Model
-class BuildLog: Codable {
+class BuildLog: Codable, Comparable {
     enum CodingKeys: String, CodingKey {
         case title, timeStartedRecording, timeStoppedRecording
     }
@@ -48,5 +48,9 @@ class BuildLog: Codable {
         try container.encode(title, forKey: .title)
         try container.encode(timeStartedRecording, forKey: .timeStartedRecording)
         try container.encode(timeStoppedRecording, forKey: .timeStoppedRecording)
+    }
+
+    static func <(lhs: BuildLog, rhs: BuildLog) -> Bool {
+        lhs.timeStartedRecording < rhs.timeStartedRecording
     }
 }

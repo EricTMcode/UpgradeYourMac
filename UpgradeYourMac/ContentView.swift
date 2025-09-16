@@ -5,19 +5,22 @@
 //  Created by Eric on 16/09/2025.
 //
 
+import SwiftData
 import SwiftUI
 
 struct ContentView: View {
     @State private var watcher = BuildWatcher()
+    @Query(sort: \BuildLog.timeStartedRecording, order: .reverse) var builds: [BuildLog]
 
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        List(builds) { build in
+            if build.title.starts(with: "Build") {
+                Label("\(build.title) on \(build.dateStarted) took \(build.timeTaken) seconds", systemImage: "hammer.circle")
+            } else {
+                Label("\(build.title) on \(build.dateStarted) took \(build.timeTaken) seconds", systemImage: "paintbrush")
+                    .foregroundStyle(.secondary)
+            }
         }
-        .padding()
     }
 }
 

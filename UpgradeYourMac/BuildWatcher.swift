@@ -60,7 +60,17 @@ class BuildWatcher {
         let changedDirectories = newDirectories.subtracting(contents)
 
         for changedDirectory in changedDirectories {
-            print("\(changedDirectory.url) changes!")
+            if let data = try? Data(contentsOf: changedDirectory.url) {
+                let decoder = PropertyListDecoder()
+
+                if let decoded = try? decoder.decode(BuildManifest.self, from: data) {
+                    if let log = decoded.logs.values.max() {
+                        print("\(log.title) took \(log.timeTaken) seconds.")
+                    }
+                } else {
+                    print("DEBUG: Decoding failed.")
+                }
+            }
         }
     }
 }
